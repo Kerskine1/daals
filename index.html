@@ -9,15 +9,15 @@
 
 <body>
   <h2>Reschedule Your Order</h2>
-  <form id="rescheduleForm">
+  <form id="rescheduleForm" method="POST">
     <label for="orderID">Order ID:</label>
-    <input type="text" id="orderID" required><br><br>
+    <input type="text" id="orderID" name="orderID" required><br><br>
 
     <label for="newDate">New Date:</label>
-    <input type="date" id="newDate" required><br><br>
+    <input type="date" id="newDate" name="newDate" required><br><br>
 
-    <label for="reason">Reason:</label>
-    <textarea id="reason" required></textarea><br><br>
+    <label for="address">Address:</label>
+    <textarea id="address" name="address" rows="4" cols="50" required></textarea><br><br>
 
     <button type="submit">Submit Reschedule</button>
   </form>
@@ -30,7 +30,7 @@
 
       const orderID = document.getElementById("orderID").value;
       const newDate = document.getElementById("newDate").value;
-      const reason = document.getElementById("reason").value;
+      const address = document.getElementById("address").value;
 
       // Use the correct deployment URL
       fetch("https://script.google.com/macros/s/AKfycbwHYPuCiOkw5Jzko-60ts8BcKoIIyyPvV0g8x9zG9SK4KjwJl75XT-pxclNCLqjqBOxhw/exec", {
@@ -41,7 +41,7 @@
         body: JSON.stringify({
           orderID: orderID,
           newDate: newDate,
-          reason: reason
+          address: address
         })
       })
       .then(response => response.json())
