@@ -1,56 +1,59 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
+
 <head>
-    <title>Reschedule Delivery</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Reschedule Order</title>
 </head>
+
 <body>
-    <h1>Reschedule Delivery</h1>
-    <form id="reschedule-form">
-        <label for="order-number">Order Number:</label><br>
-        <input type="text" id="order-number" name="orderNumber" required><br><br>
+  <h2>Reschedule Your Order</h2>
+  <form id="rescheduleForm">
+    <label for="orderID">Order ID:</label>
+    <input type="text" id="orderID" required><br><br>
 
-        <label for="address">Delivery Address:</label><br>
-        <textarea id="address" name="address" rows="4" cols="50" required></textarea><br><br>
+    <label for="newDate">New Date:</label>
+    <input type="date" id="newDate" required><br><br>
 
-        <label for="delivery-from-date">Delivery From Date:</label><br>
-        <input type="date" id="deliveryFromDate" name="deliveryFromDate" required><br><br>
+    <label for="reason">Reason:</label>
+    <textarea id="reason" required></textarea><br><br>
 
-        <p>Please be aware that when rescheduling your delivery timeframe restarts from the date selected and is not a nominated day.</p>
+    <button type="submit">Submit Reschedule</button>
+  </form>
 
-        <input type="hidden" id="original-order-id" name="originalOrderId">
-        <button type="submit">Reschedule</button>
-    </form>
+  <p id="responseMessage"></p>
 
-<script>
-document.getElementById('reschedule-form').addEventListener('submit', function(event) {
-    event.preventDefault();
+  <script>
+    document.getElementById("rescheduleForm").addEventListener("submit", function(event) {
+      event.preventDefault();
 
-    const orderNumber = document.getElementById('order-number').value;
-    const address = document.getElementById('address').value;
-    const deliveryFromDate = document.getElementById('deliveryFromDate').value;
-    const originalOrderId = document.getElementById('original-order-id').value;
+      const orderID = document.getElementById("orderID").value;
+      const newDate = document.getElementById("newDate").value;
+      const reason = document.getElementById("reason").value;
 
-    fetch('YOUR_GOOGLE_SCRIPT_DEPLOYMENT_URL', { // Replace this
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' }, 
+      // Use the correct deployment URL
+      fetch("https://script.google.com/macros/s/AKfycbwHYPuCiOkw5Jzko-60ts8BcKoIIyyPvV0g8x9zG9SK4KjwJl75XT-pxclNCLqjqBOxhw/exec", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
         body: JSON.stringify({
-            orderNumber,
-            address,
-            deliveryFromDate,
-            originalOrderId
+          orderID: orderID,
+          newDate: newDate,
+          reason: reason
         })
-    })
-    .then(response => response.json())
-    .then(data => {
-        alert(data.message);
-    })
-    .catch(error => {
-        console.error('Error:', error);
-        alert("Failed to reschedule. Please try again.");
+      })
+      .then(response => response.json())
+      .then(data => {
+        document.getElementById("responseMessage").innerText = data.message || "Reschedule request submitted!";
+      })
+      .catch(error => {
+        console.error("Error:", error);
+        document.getElementById("responseMessage").innerText = "Error submitting reschedule.";
+      });
     });
-});
-</script>
-
-
+  </script>
 </body>
+
 </html>
