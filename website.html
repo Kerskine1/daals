@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Reschedule Delivery</title>
+</head>
+<body>
+    <h1>Reschedule Delivery</h1>
+    <form id="reschedule-form">
+        <label for="order-number">Order Number:</label><br>
+        <input type="text" id="order-number" name="orderNumber" required><br><br>
+
+        <label for="address">Delivery Address:</label><br>
+        <textarea id="address" name="address" rows="4" cols="50" required></textarea><br><br>
+
+        <label for="delivery-from-date">Delivery From Date:</label><br>
+        <input type="date" id="deliveryFromDate" name="deliveryFromDate" required><br><br>
+
+        <p>Please be aware that when rescheduling your delivery timeframe restarts from the date selected and is not a nominated day.</p>
+
+        <input type="hidden" id="original-order-id" name="originalOrderId">
+        <button type="submit">Reschedule</button>
+    </form>
+
+<script>
+document.getElementById('reschedule-form').addEventListener('submit', function(event) {
+    event.preventDefault();
+
+    const orderNumber = document.getElementById('order-number').value;
+    const address = document.getElementById('address').value;
+    const deliveryFromDate = document.getElementById('deliveryFromDate').value;
+    const originalOrderId = document.getElementById('original-order-id').value;
+
+    fetch('YOUR_GOOGLE_SCRIPT_DEPLOYMENT_URL', { // Replace this
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' }, 
+        body: JSON.stringify({
+            orderNumber,
+            address,
+            deliveryFromDate,
+            originalOrderId
+        })
+    })
+    .then(response => response.json())
+    .then(data => {
+        alert(data.message);
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        alert("Failed to reschedule. Please try again.");
+    });
+});
+</script>
+
+
+</body>
+</html>
